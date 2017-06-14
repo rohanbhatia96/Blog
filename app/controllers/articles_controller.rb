@@ -18,6 +18,7 @@ class ArticlesController < ApplicationController
 	def create
 		@article = current_user.articles.create(article_params)
   		if @article.save
+
   			redirect_to @article
   		else
   			render 'new'
@@ -59,6 +60,8 @@ class ArticlesController < ApplicationController
       article = Article.find(params[:id])
       article.aprrove = true
       article.save
+      ArticleMailer.publish_article_email(current_user).deliver
+
       redirect_to  to_be_approved_articles_path
     end
 

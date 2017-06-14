@@ -7,6 +7,7 @@ class CommentsController < ApplicationController
   def create
     @article = Article.find(params[:article_id])
     @comment = @article.comments.create(comment_params)
+    CommentMailer.publish_comment_email(@article.user_id,current_user).deliver
     redirect_to article_path(@article)
   end
 
